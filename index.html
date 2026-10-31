@@ -1,12 +1,131 @@
 <!doctype html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Neco Cloudflare Test</title>
+  <meta name="description" content="Neco Lab's simple GitHub to Cloudflare auto deployment test.">
+  <meta name="theme-color" content="#0b0f10">
+  <title>Neco Lab Web Test</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --background: #0b0f10;
+      --surface: #101718;
+      --white: #ffffff;
+      --muted: #a8b8b9;
+      --turquoise: #00A3A3;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      padding: clamp(1rem, 4vw, 3rem);
+      background: var(--background);
+      color: var(--white);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+
+    main {
+      width: 100%;
+      max-width: 52rem;
+      padding: clamp(2rem, 6vw, 5rem) clamp(1.25rem, 5vw, 4rem);
+      border: 1px solid #293a3c;
+      border-radius: 1.5rem;
+      background: var(--surface);
+      text-align: center;
+      transition: border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .eyebrow {
+      margin: 0 0 1.75rem;
+      color: var(--turquoise);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.25rem, 6vw, 4rem);
+      line-height: 1.15;
+      letter-spacing: -0.045em;
+      text-wrap: balance;
+    }
+
+    .pipeline {
+      margin: 1.25rem 0 0;
+      color: var(--muted);
+      font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+      text-wrap: balance;
+    }
+
+    .pipeline span { color: var(--turquoise); }
+
+    .divider {
+      width: 3rem;
+      height: 2px;
+      margin: 2rem auto;
+      background: var(--turquoise);
+    }
+
+    .success {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      max-width: 100%;
+      margin: 0;
+      padding: 0.75rem 1rem;
+      border: 1px solid #215152;
+      border-radius: 0.75rem;
+      background: #0d2425;
+      font-size: clamp(0.85rem, 2vw, 1rem);
+      overflow-wrap: anywhere;
+    }
+
+    .success::before {
+      content: "";
+      flex: 0 0 0.45rem;
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 50%;
+      background: var(--turquoise);
+    }
+
+    footer {
+      margin-top: 2.5rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+    }
+
+    @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+      main:hover {
+        border-color: var(--turquoise);
+        box-shadow: 0 0 2.5rem #00a3a312;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      main { transition: none; }
+    }
+  </style>
 </head>
 <body>
-  <h1>Neco Lab Web Test 🐾</h1>
-  <p>GitHub auto deploy success! 🚀</p>
+  <main aria-labelledby="page-title">
+    <p class="eyebrow">Neco Tools Design Lab</p>
+    <h1 id="page-title">Neco Lab Web Test</h1>
+    <p class="pipeline">GitHub <span>→</span> Cloudflare Auto Deploy</p>
+    <div class="divider" aria-hidden="true"></div>
+    <p class="success">Deployment pipeline is working! 🚀</p>
+    <footer>A small page. A connected workflow.</footer>
+  </main>
 </body>
 </html>
