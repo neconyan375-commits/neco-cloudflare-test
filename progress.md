@@ -11,3 +11,9 @@
 - Source scan found no secret key, legacy JWT key, or privileged credential. Only the intentionally public publishable key is included.
 - Existing project advisor notices were left unchanged and are recorded in the local handoff memo; this test does not include remediation of existing application objects.
 - After updating main, verify the Cloudflare commit check and open the unmodified production URL to confirm the live result. No Cloudflare configuration changes or manual deployments are required.
+
+## 2026-11-01 04:06 JST — Production verification and missing icon
+
+- Commit `2ea169b5279be54aa4768c4d7d51aafa2896ff67` reached main through the GitHub connector; Cloudflare's automatic build completed successfully (check run `124629562174`).
+- The unmodified production URL returned the exact committed HTML. Its browser GET to Supabase returned HTTP 200, `Content-Profile: public`, and CORS approval for the production origin. Confirmed `Supabase connection: OK` and `Hello from Supabase! 🐾`, with no uncaught JavaScript errors.
+- The first production console check also showed a missing-resource 404; `/favicon.ico` was absent. Added a tiny inline SVG favicon to prevent that extra request without adding files or external resources. Repeat the production console check after the follow-up auto deployment.
