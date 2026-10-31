@@ -99,6 +99,26 @@
       background: var(--turquoise);
     }
 
+    .connection {
+      margin-top: 1.5rem;
+      padding: 1.25rem 1rem;
+      border: 1px solid #293a3c;
+      border-radius: 0.75rem;
+      overflow-wrap: anywhere;
+    }
+
+    .connection p { margin: 0; }
+
+    #connection-status { font-weight: 600; }
+
+    #connection-message {
+      margin-top: 0.5rem;
+      color: var(--muted);
+    }
+
+    .connection[data-state="ok"] { border-color: var(--turquoise); }
+    .connection[data-state="ok"] #connection-status { color: var(--turquoise); }
+
     footer {
       margin-top: 2.5rem;
       color: var(--muted);
@@ -125,7 +145,59 @@
     <p class="pipeline">GitHub <span>→</span> Cloudflare Auto Deploy</p>
     <div class="divider" aria-hidden="true"></div>
     <p class="success">Deployment pipeline is working! 🚀</p>
+    <section class="connection" data-state="loading" aria-label="Supabase connection test" role="status" aria-live="polite" aria-atomic="true">
+      <p id="connection-status">Connecting to Supabase...</p>
+      <p id="connection-message"></p>
+    </section>
+    <noscript><p>Enable JavaScript to run the Supabase connection test.</p></noscript>
     <footer>A small page. A connected workflow.</footer>
   </main>
+  <script>
+    // This public client key is intentionally visible. Table grants and RLS restrict access.
+    const supabaseUrl = 'https://iglsnksguflhhoqubzfp.supabase.co';
+    const supabasePublishableKey = 'sb_publishable_3a3ZFGvVhtmFE1hYUvMwog_OHRdmuff';
+    const connection = document.querySelector('.connection');
+    const connectionStatus = document.querySelector('#connection-status');
+    const connectionMessage = document.querySelector('#connection-message');
+
+    async function testSupabaseConnection() {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 10000);
+
+      try {
+        const response = await fetch(
+          `${supabaseUrl}/rest/v1/cloudflare_test?select=id,message&id=eq.1&limit=1`,
+          {
+            headers: { apikey: supabasePublishableKey, Accept: 'application/json' },
+            credentials: 'omit',
+            cache: 'no-store',
+            signal: controller.signal
+          }
+        );
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const rows = await response.json();
+        if (!Array.isArray(rows) || rows.length !== 1 ||
+            String(rows[0]?.id) !== '1' || typeof rows[0]?.message !== 'string') {
+          throw new Error('Test row not found or invalid.');
+        }
+
+        connection.dataset.state = 'ok';
+        connectionStatus.textContent = 'Supabase connection: OK';
+        connectionMessage.textContent = rows[0].message;
+      } catch (error) {
+        connection.dataset.state = 'error';
+        connectionStatus.textContent = 'Supabase connection: ERROR';
+        connectionMessage.textContent = error.name === 'AbortError'
+          ? 'Request timed out.'
+          : error instanceof TypeError ? 'Unable to reach Supabase.' : error.message;
+      } finally {
+        clearTimeout(timeout);
+      }
+    }
+
+    testSupabaseConnection();
+  </script>
 </body>
 </html>
